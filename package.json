@@ -1,0 +1,31 @@
+{
+  "name": "hamedal-sdk-test",
+  "version": "1.0.0",
+  "description": "Hamedal's Software Development Kit (SDK) used to interact with the camera by third-party applications",
+  "main": "src/device.js",
+  "keywords": [
+    "SDK",
+    "API",
+    "Hamedal",
+    "AI",
+    "People",
+    "Count",
+    "Genius"
+  ],
+  "author": "AuditoryWorks",
+  "dependencies": {
+    "crc": "^3.8.0",
+    "node-hid": "^1.2.0",
+    "usb": "^1.6.2",
+    "uvc-control2": "~1.0.5",
+    "uvc-control": "^1.0.2"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.15.2"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/",
+    "access": "public"
+  }
+}
