@@ -42,7 +42,7 @@ Transport.prototype.sendMsg = function sendMsg(message) {
             var dataSend = Buffer.alloc(1);
             return this._device.write(Buffer.concat([dataSend, message], message.length + 1));
         }
-        return this._device.write(message, message.length);
+        return this._device.write(message);
     }
 }
 
