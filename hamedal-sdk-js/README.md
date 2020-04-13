@@ -1,22 +1,16 @@
 # HamedalSDK
-
-```angular2
-
-```
-
 ### Example
-
 ```javascript
-var Hamedal = require('../src/device');
+var Hamedal = require('hamedal-sdk')
 
-var cameras =  Hamedal.devices();
+var cameras =  Hamedal.falcon.devices();
 if (cameras.length == 0){
     console.log('unable');
 }
 console.log(cameras);
 
 cameraInfo = cameras[0];
-falcon = new Hamedal.FalconCamera(cameraInfo);
+falcon = new Hamedal.falcon.FalconCamera(cameraInfo);
 
 falcon.isAIModeEnabled().then(value => {
     console.log("The status of the camera mode: ", value ? "enabled" : "disabled");
@@ -49,7 +43,10 @@ falcon.close();
 ###List all Hamedal devices
 ```javascript
 var Hamedal = require('hamedal-sdk');
-var cameras =  Hamedal.devices();
+var cameras =  Hamedal.falcon.devices();
+if (cameras.length == 0){
+    console.log('unable');
+}
 console.log(cameras);
 ```
 

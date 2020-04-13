@@ -1,5 +1,6 @@
 var Transport = require('./transport')
 var AIMode = require('./aiMode')
+var Protocol = require('./protocol')
 
 var FALCON_CAMERA_USB = {
     VID: 0x0525,
@@ -11,9 +12,14 @@ var FALCON_CAMERA_USB = {
 var READ_TIMEOUT = 5000;//5s
 
 var _aimode = new AIMode.AIMode();
+var _protocol = new Protocol.Protocol();
 
-function hamedalDevices() {
-    return Transport.availableDevices();
+function falconDevices() {
+    return Transport.availableDevices(
+        FALCON_CAMERA_USB.VID,
+        FALCON_CAMERA_USB.PID,
+        FALCON_CAMERA_USB.USAGE_PAGE,
+        FALCON_CAMERA_USB.USAGE);
 }
 
 var FalconCamera = function (deviceInfo) {
@@ -117,9 +123,47 @@ FalconCamera.prototype.getBodyCount = async function getBodyCount() {
     });
 }
 
+FalconCamera.prototype.getDeviceInfo = async function getDeviceInfo(){
+    var pack = _protocol.falconDeviceInfo();
+    var reply = await this._sendAndRecieve(pack, READ_TIMEOUT);
+    return new Promise(function (resolve, reject) {
+        var result = Protocol.onRcv(Buffer.from(reply));
+        if (result != false){
+            resolve(result);
+        }else {
+            reject('wrong respond');
+        }
+    })
+}
+
+FalconCamera.prototype.parseDevInfoPayload = function parseFalconDevInfo(payload) {
+    var sn = 'invalid';
+    var sw = 'invalid';
+    var pn = 'invalid';
+    //product name
+    pn = payload.toString('utf8', 0, 32);
+    //software version
+    sw = payload.toString('utf8', 32, 64);
+    ii = sw.indexOf('\0');
+    iv = sw.indexOf('V');
+    ir = sw.indexOf('R');
+    if (ir < 0) {
+        ir = sw.indexOf('B');
+    }
+    if (ir < 0) {
+        ir = sw.indexOf('L');
+    }
+    sw = sw.substr(iv + 1, ir - 2);
+    //serial number
+    sn = payload.toString('utf8', 64, 96);
+    ii = sn.indexOf('\0');
+    sn = sn.substr(0, ii);
+    return {pn, sw, sn};
+}
+
 module.exports = {
     FalconCamera: FalconCamera,
     //sendAndRecieve: sendAndRecieve
-    devices: hamedalDevices
+    devices: falconDevices
 }
 

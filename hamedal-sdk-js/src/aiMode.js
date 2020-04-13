@@ -1,5 +1,4 @@
 var MessagePacket = require('./message')
-var Device = require('./device')
 
 function AIMode() {
 

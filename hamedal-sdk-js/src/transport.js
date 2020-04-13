@@ -14,12 +14,13 @@ function HidDevice(vid, pid, usagePage, usage) {
     return device;
 }
 
-function availableDevices() {
+function availableDevices(vid, pid, usagePage, usage) {
     var devices = HID.devices();
+    //console.log(devices);
     var availables = [];
     for (i = 0; i < devices.length; i++) {
         let deviceInfo = devices[i];
-        if (deviceInfo.vendorId == 0x0525 && deviceInfo.productId == 0xa4ac) {
+        if (deviceInfo.vendorId == vid && deviceInfo.productId == pid && deviceInfo.usage == usage) {
             availables.push(deviceInfo);
         }
     }
