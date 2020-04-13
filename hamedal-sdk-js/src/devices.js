@@ -159,6 +159,7 @@ async function getFalconCameraPeopleCount(sn) {
             if (dev.sn == sn) {
                 count = await camera.getBodyCount();
             }
+            camera.close();
         }
     }
     return count;
