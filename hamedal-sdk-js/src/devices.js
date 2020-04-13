@@ -1,7 +1,7 @@
 var falcon = require('./falcon')
 var dolphin = require('./dolphin')
 
-async function listFalconDevInfo(){
+async function listFalconDevInfo() {
     let Camera = [];
     var cameras = falcon.devices();
     if (cameras.length == 0) {
@@ -26,12 +26,13 @@ async function listFalconDevInfo(){
                 firmware: "Hamedal_V20"
             }
             Camera.push(cameraInfo);
+            camera.close();
         }
     }
     return Camera;
 }
 
-async function listDolphinDevInfo(){
+async function listDolphinDevInfo() {
     let Audio = [];
     //枚举dophin设备
     var audios = dolphin.devices();
@@ -73,15 +74,102 @@ async function listDolphinDevInfo(){
                 Audio.push(audioInfos);
             } else {
             }
+            audio.close();
         }
     }
     return Audio;
 }
 
+async function enableFalconCameraAIMode(sn, enable) {
+    //console.log(request.query.sn);
+    //console.log(request.query.enable);
+    var isEnabled = 0;
+    var cameras = falcon.devices();
+    if (cameras.length == 0) {
+        console.log('no falcon camera');
+    } else {
+        //console.log(cameras);
+        //do sth
+        for (i = 0; i < cameras.length; i++) {
+            var camera = new falcon.FalconCamera(cameras[i]);
+            try {
+                var infoPayload = await camera.getDeviceInfo();
+            } catch (e) {
+                //console.log(e);
+            }
+            let dev = camera.parseDevInfoPayload(infoPayload);
+
+            if (dev.sn == sn) {
+                if (enable == 'true') {
+                    await camera.enableAIMode();
+                } else {
+                    await camera.disableAIMode();
+                }
+                isEnabled = await camera.isAIModeEnabled();
+            }
+            camera.close();
+        }
+    }
+    return isEnabled;
+}
+
+async function getFalconCameraAIModeStatus(sn) {
+//console.log('', request.query.sn);
+    var isEnabled = 0;
+    var cameras = falcon.devices();
+    if (cameras.length == 0) {
+        console.log('no falcon camera');
+    } else {
+        //console.log(cameras);
+        //do sth
+        for (i = 0; i < cameras.length; i++) {
+            var camera = new falcon.FalconCamera(cameras[i]);
+            try {
+                var infoPayload = await camera.getDeviceInfo();
+            } catch (e) {
+                //console.log(e);
+            }
+            let dev = camera.parseDevInfoPayload(infoPayload);
+            if (dev.sn == sn) {
+                isEnabled = await camera.isAIModeEnabled();
+            }
+            camera.close();
+        }
+    }
+    return isEnabled;
+}
+
+async function getFalconCameraPeopleCount(sn) {
+    var count = 0;
+    var cameras = falcon.devices();
+    if (cameras.length == 0) {
+        console.log('no falcon camera');
+    } else {
+        //console.log(cameras);
+        //do sth
+        for (i = 0; i < cameras.length; i++) {
+            var camera = new falcon.FalconCamera(cameras[i]);
+            try {
+                var infoPayload = await camera.getDeviceInfo();
+            } catch (e) {
+                //console.log(e);
+            }
+            let dev = camera.parseDevInfoPayload(infoPayload);
+            var isEnabled;
+            if (dev.sn == sn) {
+                count = await camera.getBodyCount();
+            }
+        }
+    }
+    return count;
+}
 
 module.exports = {
     falcon: falcon,
     dolphin: dolphin,
-    listFalconDevInfo:listFalconDevInfo,
-    listDolphinDevInfo:listDolphinDevInfo
+    listFalconDevInfo: listFalconDevInfo,
+    listDolphinDevInfo: listDolphinDevInfo,
+    enableFalconCameraAIMode: enableFalconCameraAIMode,
+    getFalconCameraAIModeStatus: getFalconCameraAIModeStatus,
+    getFalconCameraPeopleCount: getFalconCameraPeopleCount
 }
