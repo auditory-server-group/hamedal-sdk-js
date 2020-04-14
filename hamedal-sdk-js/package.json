@@ -1,6 +1,6 @@
 {
   "name": "hamedal-sdk",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Hamedal's Software Development Kit (SDK) used to interact with the camera by third-party applications",
   "main": "./src/devices.js",
   "keywords": [

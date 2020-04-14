@@ -14,7 +14,7 @@ async function listFalconDevInfo() {
             try {
                 var infoPayload = await camera.getDeviceInfo();
             } catch (e) {
-                //console.log(e);
+                console.log(e);
             }
             let dev = camera.parseDevInfoPayload(infoPayload);
             let cameraInfo = {
@@ -45,6 +45,7 @@ async function listDolphinDevInfo() {
             try {
                 infoPayload = await audio.getDeviceInfo();
             } catch (e) {
+                console.log(e)
             }
             var devs = audio.parseDevInfoPayload(infoPayload);
             //console.log(devs);
@@ -60,14 +61,14 @@ async function listDolphinDevInfo() {
                 Audio.push(audioInfo);
             } else if (devs.length > 1) {
                 let audioInfos = []
-                for (i = 0; i < devs.length; i++) {
+                for (j = 0; j < devs.length; j++) {
                     let audioInfo = {
                         Brand: "Hamedal",
                         InnerModel: "Dolphin",
                         OuterModel: "AW20 Pro",
-                        SN: devs[i].serial_number,
-                        version: devs[i].soft_version,
-                        firmware: devs[i].phy_version
+                        SN: devs[j].serial_number,
+                        version: devs[j].soft_version,
+                        firmware: devs[j].phy_version
                     }
                     audioInfos.push(audioInfo);
                 }
