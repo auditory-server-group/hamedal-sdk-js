@@ -1,13 +1,14 @@
 # HamedalSDK
 
 ### Demo
-```
-1.Electron Demo
-https://github.com/auditory-server-group/Hamedal-SDK-Electron-Demo
+1.Electron Demo:
 
-2.Http server Demo
-https://github.com/auditory-server-group/hamedal-http-server-app
-```
+[Hamedal-Electron-Demo](https://github.com/auditory-server-group/Hamedal-SDK-Electron-Demo)
+
+2.Http server Demo:
+
+[Hamedal-Http-server-app](https://github.com/auditory-server-group/hamedal-http-server-app)
+
 
 ### Example
 ```javascript
